@@ -31,21 +31,18 @@ _"gitというコマンドが見当たらないないよ"_と言われたら[イ
 $ git clone https://github.com/matabesu/codereview.git
 ```
 
-## 4. ブランチに切り替える
+## 4. ブランチを切り替える
+
+デフォルトだと master branch にいるので、Pull Request 用の branch `PR-me` に checkout します
 
 ```
-$ git checkout -b きみの会社メールアドレスの@以前
-```
-
-例：
-````
-$ git checkout -b shimizu_ryoichi
+$ git checkout -b PR-me origin/PR-me
 ```
 
 ```
 $ git branch 
 
-* shimizu_ryoichi
+* PR-me
   master
 ```
 
@@ -82,9 +79,9 @@ $ git push origin shimizu_ryoichi_elm_1
 
 現場等で PR を送るときには内容などをしっかりと簡潔に明記するほうがよいですが、今回はあまり気にせず面白さ重視でやっていきましょう。
 
-問題の branch から自分の master の branch に PR を送ります。
+問題の branch から PR-me の branch に PR を送ります。
 
-`shimizu_ryoichi:shimizu_ryoichi_elm_1` というような感じで。
+`PR-me:shimizu_ryoichi_elm_1` というような感じで。
 
 ### merge のフロー
 
@@ -100,3 +97,5 @@ PR は3人以上のレビューがあるのが望ましいです。レビュー�
 6. Aさんがclose
 
 このこのようなサイクルを回してレビューしていきましょう。
+
+別の問題にトライするときには、一旦 `PR-me` の branch に checkout してから5番からやります。
