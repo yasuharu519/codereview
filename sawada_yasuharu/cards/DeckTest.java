@@ -19,28 +19,28 @@ import java.util.*;
 public class DeckTest {
     
     @Test
-    public void デッキはジョーカー抜きで52枚(){//{{{
+    public void デッキはジョーカー抜きで52枚(){
         Deck deck = new Deck(0);
 
         assertThat(deck.getRemainedCardNumber(), is(52));
-    }//}}}
+    }
 
     @Test
-    public void デッキはジョーカー抜きで52枚_ver2(){//{{{
+    public void デッキはジョーカー抜きで52枚_ver2(){
         Deck deck = new Deck();
 
         assertThat(deck.getRemainedCardNumber(), is(52));
-    }//}}}
+    }
 
     @Test
-    public void デッキはジョーカー入れると増える(){//{{{
+    public void デッキはジョーカー入れると増える(){
         Deck deck = new Deck(2);
 
         assertThat(deck.getRemainedCardNumber(), is(54));
-    }//}}}
+    }
 
     @Test
-    public void デッキは最初シャッフルされている() {//{{{
+    public void デッキは最初シャッフルされている() {
         Deck deck1 = new Deck();
         Deck deck2 = new Deck();
         Card card1;
@@ -54,10 +54,10 @@ public class DeckTest {
                 flag = false;
         }
         assertThat(flag, is(false));
-    }//}}}
+    }
 
     @Test
-    public void デッキから指定枚数のカードを引くことができる() {//{{{
+    public void デッキから指定枚数のカードを引くことができる() {
         List<Card> drawnCards;
         Deck deck = new Deck(2);
         assertThat(deck.getRemainedCardNumber(), is(54));
@@ -69,7 +69,7 @@ public class DeckTest {
             assertThat(drawnCards.size(), is(10));
         }catch(NumberExceedException e){
         }
-    }//}}}
+    }
 
     @Test(expected= NumberExceedException.class)
     public void 残り枚数よりも大きな数をひこうとするとエラーが投げられる() throws NumberExceedException {

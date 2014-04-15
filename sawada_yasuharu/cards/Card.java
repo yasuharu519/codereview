@@ -26,6 +26,11 @@ public class Card extends Object implements Comparable{
        number = _number;
    }
 
+   /**
+    * 比較対象が自信より順序が後かどうか調べる
+    * @param other 比較対象のCard
+    * @return 自身のほうが大きいか等しければ true
+    */
    public boolean isBiggerThanOrEqualTo(Card other){
        return compareTo(other) >= 0;
    }

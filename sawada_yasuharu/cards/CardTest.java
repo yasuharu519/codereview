@@ -19,22 +19,22 @@ import java.util.*;
 public class CardTest {
     
     @Test
-    public void カードはマークと数字を持つ(){//{{{
+    public void カードはマークと数字を持つ(){
         Card card = new Card(Suit.Club, 1);
 
         assertThat(card.suit, is(Suit.Club));
         assertThat(card.number, is(1));
-    }//}}}
+    }
 
     @Test
-    public void ジョーカーが存在する() {//{{{
+    public void ジョーカーが存在する() {
         Card joker = new Card(Suit.Joker);
 
         assertThat(joker.suit, is(Suit.Joker));
-    }//}}}
+    }
 
     @Test
-    public void 同じマークだと数字が大きいほうが大きい() {//{{{
+    public void 同じマークだと数字が大きいほうが大きい() {
         // クラブ
         Card card1;
         Card card2;
@@ -46,10 +46,10 @@ public class CardTest {
                 assertThat(card2.isBiggerThanOrEqualTo(card1), is(true));
             }
         }
-    }//}}}
+    }
 
     @Test
-    public void マークの大小関係のテスト() {//{{{
+    public void マークの大小関係のテスト() {
         Suit[] suits = {Suit.Club, Suit.Diamond, Suit.Heart, Suit.Spade, Suit.Joker};
         Card card1;
         Card card2;
@@ -58,11 +58,11 @@ public class CardTest {
             card2 = new Card(suits[i+1], 1);
             assertThat(card2.isBiggerThanOrEqualTo(card1), is(true));
         }
-    }//}}}
+    }
     
     @SuppressWarnings("unchecked")
 	@Test
-    public void ソート可能() {//{{{
+    public void ソート可能() {
         Card card1 = new Card(Suit.Club, 1);
         Card card2 = new Card(Suit.Joker);
         List<Card> cardList = new ArrayList<>();
@@ -77,6 +77,6 @@ public class CardTest {
         // カードの順番を見る
         assertThat(cardList.get(0), is(card1));
         assertThat(cardList.get(1), is(card2));
-    }//}}}
+    }
 }
 

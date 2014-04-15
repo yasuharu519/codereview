@@ -25,7 +25,11 @@ public class Deck{
         this(0);
     }
 
-    private void initialize(int _jokerNum){//{{{
+    /**
+     * カードを追加し、シャッフルを行う関数
+     * @param _jokerNum 追加するジョーカーの数
+     */
+    private void initialize(int _jokerNum){
         for (Suit suit : Suit.values()) {
             if(suit == Suit.Joker){
                 for (int i = 0; i < _jokerNum; i++) {
@@ -40,12 +44,22 @@ public class Deck{
         }
         // シャッフル
         Collections.shuffle(cardList);
-    }//}}}
+    }
     
+    /**
+     * デッキに残っているカードの枚数を返す
+     * @return 残っているカードの枚数
+     */
     public int getRemainedCardNumber(){
         return cardList.size();
     }
 
+    /**
+     * カードを頭から引いて、そのリストを返す
+     * @param drawNumber 引くカードの枚数
+     * @throws NumberExceedException 残数より大きいカードを引いた場合
+     * @return 引かれたカードが含まれるList<Card>
+     */
     public List<Card> drawCards(int drawNumber) throws NumberExceedException {
         List<Card> drawnCards = new ArrayList<>();
         if(drawNumber > getRemainedCardNumber()){
@@ -59,6 +73,11 @@ public class Deck{
         return drawnCards;
     }
     
+    /**
+     * カードの覗き見を行う関数
+     * @param idx インデックス
+     * @return インデックスに当たるCard
+     */
     public Card peek(int idx){
     	return cardList.get(idx);
     }
