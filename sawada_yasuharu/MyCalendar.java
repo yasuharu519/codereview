@@ -13,13 +13,13 @@ public class MyCalendar{
      * @param _year 年を表すint
      * @param _month 月を表すint
      */
-    public MyCalendar(int _year, int _month){//{{{
+    public MyCalendar(int _year, int _month){
         Calendar cal = Calendar.getInstance();
         year = _year;
         month = _month;
 
         calculateField();
-    }//}}}
+    }
 
     /**
      * matrix配列に日付を埋めていく
@@ -27,7 +27,7 @@ public class MyCalendar{
      * - matrix[0]は第1週目を示す
      * - 1日が火曜日から始まる場合 matrix[0] = {0, 0, 1, 2, 3, 4, 5}
      */
-    private void calculateField(){//{{{
+    private void calculateField(){
         Calendar cal = Calendar.getInstance();
         cal.clear();
         cal.set(year, month - 1, 1);
@@ -47,13 +47,13 @@ public class MyCalendar{
                 column = 0;
             }
         }
-    }//}}}
+    }
 
     /**
      * カレンダークラスを文字列表現する関数
      */
     @Override
-    public String toString(){//{{{
+    public String toString(){
         int day;
         StringBuilder result = new StringBuilder();
         String NEW_LINE = System.getProperty("line.separator");
@@ -78,7 +78,7 @@ public class MyCalendar{
             result.append(NEW_LINE);
         }
         return result.toString();
-    }//}}}
+    }
 
     public static void main(String[] args) {
         int year;
