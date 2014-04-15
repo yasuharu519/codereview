@@ -36,8 +36,8 @@ public class Intermediate2{
     }
 
     public static void main(String[] args) {
-		int[] src = {1, 1, 2, 2, 2, 3, 4, 4, 5, 5};
-		int[] actual = Intermediate2.uniq(src);
+	    int[] src = {1, 1, 2, 2, 2, 3, 4, 4, 5, 5};
+	    int[] actual = Intermediate2.uniq(src);
         for (int num : actual) {
             System.out.println(num);
         }
