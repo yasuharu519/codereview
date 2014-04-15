@@ -51,23 +51,52 @@ $ git branch
 
 で自分のブランチに**＊**マークがあることを確認する
 
-## 5. コーディング
+**初回でここまで**
 
-...
+**ここから各問題毎に繰り返し**
 
-## 6. ローカルレポジトリにコミットする
+## 5. 問題の branch を自分の branch から切る
 
 ```
-$ git add shimizu_ryoichi/*
+$ git checkout -b shimizu_ryoichi_elm_1
+```
+
+## 6. コーディング
+
+当該の問題の branch にコミットを積んでいく。解き終わってから commit するよりは、粒度を決めてこまめに commit する方があとからレビューしやすそう。思考の流れとかが。
+
+## 7. ローカルレポジトリにコミットする
+
+```
+$ git add shimizu_ryoichi/elm_1/*
 $ git commit -m 'コミットメッセージ'
 ```
 
-## 7. プログラムの目処がついたら、GitHubの自分のレポジトリにプッシュする
+## 8. プログラムの目処がついたら、GitHubの自分のレポジトリにプッシュする
 
 ```
-$ git push origin shimizu_ryoichi
+$ git push origin shimizu_ryoichi_elm_1
 ```
 
-以上
+## 9. Pull request を送る
 
+現場等で PR を送るときには内容などをしっかりと簡潔に明記するほうがよいですが、今回はあまり気にせず面白さ重視でやっていきましょう。
 
+問題の branch から自分の master の branch に PR を送ります。
+
+`shimizu_ryoichi:shimizu_ryoichi_elm_1` というような感じで。
+
+### merge のフロー
+
+PR は3人以上のレビューがあるのが望ましいです。レビューをして気になる箇所があれば、適宜ソースコードにコメントを追加すると PR で参照することができて便利です。3人以上のレビューが通ったら自分で close します。
+
+(例)
+
+1. Aさんがpush
+2. AさんがPRを送る
+3. BさんとCさんのLGTM(Looks Good To Me)をもらえたが、Dさんに指摘をうけた
+4. Aさんがコードを直してpush
+5. DさんのLGTMをもらう
+6. Aさんがclose
+
+このこのようなサイクルを回してレビューしていきましょう。
