@@ -5,7 +5,7 @@ import java.util.*;
 public class Intermediate1{
 
     /**
-     * intを入力としてうけとり、2進数表現の文字列で返す
+     * intを入力として受け取り、2進数表現の文字列で返す
      *
      * @param input 2進数変換したいint
      * @throws IllegalArgumentException 負の数が入力された場合
