@@ -14,7 +14,7 @@ public class MyEratosthenes{
      * 10が入力された場合、{2,3,4,5,6,7,8,9,10}が代入される
      * @param _maxNum 篩がけする最大の数
      */
-    public MyEratosthenes(int _maxNum){//{{{
+    public MyEratosthenes(int _maxNum){
         maxNum = _maxNum;
         if(maxNum >= 2){
             for (int i = 2; i <= maxNum; i++) {
@@ -22,21 +22,21 @@ public class MyEratosthenes{
             }
             search();
         }
-    }//}}}
+    }
 
     /**
      * ふるいがけから残った数を出力する
      */
-    public void printList(){//{{{
+    public void printList(){
         for (int data : primeList) {
             System.out.print(data + " ");
         }
-    }//}}}
+    }
 
     /**
      * ふるいがけを行い、素数を探す
      */
-    private void search(){//{{{
+    private void search(){
         int popped;
         while (true) {
             // 先頭を取り出し
@@ -58,7 +58,7 @@ public class MyEratosthenes{
         if(searchList.size() > 0){
             primeList.addAll(searchList);
         }
-    }//}}}
+    }
 
     public static void main(String[] args) {
         System.out.println("素数リストを出力するプログラムです。");
