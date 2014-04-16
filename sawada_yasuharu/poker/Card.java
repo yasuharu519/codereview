@@ -1,4 +1,4 @@
-package cards;
+package poker;
 
 /**
 *
@@ -9,7 +9,9 @@ enum Suit {
    Diamond,
    Heart,
    Spade,
-   Joker,
+   Joker;
+
+   
 }
 
 public class Card extends Object implements Comparable{
