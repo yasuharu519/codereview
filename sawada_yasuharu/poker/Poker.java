@@ -42,20 +42,15 @@ public class Poker{
         dealCards();
     }
 
-    private void dealCards(){//{{{
-        try{
-            hand = this.deck.drawCards(5);
-        }catch(NumberExceedException e){
-            System.out.println("デッキにカードがありません");
-            System.exit(1);
-        }
-    }//}}}
-
-    private void playGame(){//{{{
+////////////////////////////////////////////////////////////////////////////////
+// Public
+////////////////////////////////////////////////////////////////////////////////
+    public int[] askExchangeCards(){//{{{
         boolean isValidInput = false;
         String inputStr;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        
+        int[] inputNums = {};
+
         while (!isValidInput) {
             try {
                 inputStr = reader.readLine();
@@ -65,7 +60,8 @@ public class Poker{
                     continue;
                 }
                 char[] inputChars = inputStr.toCharArray();
-                int[] inputNums = new int[inputChars.length];
+                inputNums = new int[inputChars.length];
+
                 // 1-5以外が入力された場合エラー
                 for (int i = 0; i < inputChars.length; i++) {
                     int num = Integer.parseInt(String.valueOf(inputChars[i]));
@@ -79,14 +75,6 @@ public class Poker{
                 }
                 // 入力は不正なし
                 isValidInput = true;
-                // 0が入力された場合カードを入れ替えずに終了
-                if (inputNums.length == 1 && inputNums[0] == 0){
-                    break;
-                }
-                // カードの入れ替え
-                for (int n : inputNums) {
-                    exchangeCard(n);
-                }
             } catch (NumberFormatException e) {
                 System.out.println("数字を入力してください");
                 continue;
@@ -100,6 +88,76 @@ public class Poker{
                 System.out.println("入力が不正です");
                 continue;
             }
+        }
+        return inputNums;
+    }//}}}
+
+    public HandType checkHand(){//{{{
+        int[] cardNumbers = getCardNumbers();
+            
+        if ( isStraight() && isFlush()) {
+            // ストレート・フラッシュ
+            return HandType.STRAIGHT_FLUSH;
+        } else if ( cardNumbers[cardNumbers.length - 1] == 4) {
+            // フォーカード
+            return HandType.FOUR_OF_A_KIND;
+        } else if ( cardNumbers[cardNumbers.length - 1] == 3 &&
+                cardNumbers[cardNumbers.length - 2] == 2) {
+            // フルハウス
+            return HandType.FULL_HOUSE;
+        } else if (isFlush()) {
+            // フラッシュ
+            return HandType.FLUSH;
+        } else if ( isStraight()) {
+            // ストレート
+            return HandType.STRAIGHT;
+        } else if ( cardNumbers[cardNumbers.length - 1] == 3) {
+            // スリーカード
+            return HandType.THREE_OF_A_KIND;
+        } else if ( cardNumbers[cardNumbers.length - 1] == 2 &&
+                cardNumbers[cardNumbers.length - 2] == 2) {
+            // ツーペア
+            return HandType.TWO_PAIR;
+        } else if ( cardNumbers[cardNumbers.length - 1] == 2) {
+            // ワンペア
+            return HandType.ONE_PAIR;
+        } else{
+            // ノーペア
+            return HandType.NO_PAIR;
+        }
+    }//}}}
+
+    public List<Card> getHand(){//{{{
+        return this.hand;
+    }//}}}
+
+    public void exchangeCards(int[] nums){//{{{
+        try{
+            if (nums.length == 1 && nums[0] == 0) {
+                return;
+            }
+            List<Card> cards = deck.drawCards(nums.length);
+            for (int i = 0; i < nums.length; i++) {
+                Card card = cards.get(i);
+                int idx = nums[i] - 1;
+                hand.set(idx, card);
+            }
+        }catch(NumberExceedException e){
+            System.out.println("デッキにカードがありません");
+            System.out.println("1人ポーカーなのでこんなことは起きないはずなので、終了させてください(๑╹ڡ╹๑)");
+            System.exit(1);
+        }
+    }//}}}
+
+////////////////////////////////////////////////////////////////////////////////
+// Private
+////////////////////////////////////////////////////////////////////////////////
+    private void dealCards(){//{{{
+        try{
+            hand = this.deck.drawCards(5);
+        }catch(NumberExceedException e){
+            System.out.println("デッキにカードがありません");
+            System.exit(1);
         }
     }//}}}
 
@@ -142,56 +200,6 @@ public class Poker{
         return numbersList;
     }//}}}
 
-    public HandType checkHand(){//{{{
-        int[] cardNumbers = getCardNumbers();
-            
-        if ( isStraight() && isFlush()) {
-            // ストレート・フラッシュ
-            return HandType.STRAIGHT_FLUSH;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 4) {
-            // フォーカード
-            return HandType.FOUR_OF_A_KIND;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 3 &&
-                cardNumbers[cardNumbers.length - 2] == 2) {
-            // フルハウス
-            return HandType.FULL_HOUSE;
-        } else if (isFlush()) {
-            // フラッシュ
-            return HandType.FLUSH;
-        } else if ( isStraight()) {
-            // ストレート
-            return HandType.STRAIGHT;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 3) {
-            // スリーカード
-            return HandType.THREE_OF_A_KIND;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 2 &&
-                cardNumbers[cardNumbers.length - 2] == 2) {
-            // ツーペア
-            return HandType.TWO_PAIR;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 2) {
-            // ワンペア
-            return HandType.ONE_PAIR;
-        } else{
-            // ノーペア
-            return HandType.NO_PAIR;
-        }
-    }//}}}
-
-    public List<Card> getHand(){//{{{
-        return this.hand;
-    }//}}}
-
-    public void exchangeCard(int num){//{{{
-        try{
-            Card card = deck.drawCards(1).get(0);
-            int idx = num - 1;
-            hand.set(idx, card);
-        }catch(NumberExceedException e){
-            System.out.println("デッキにカードがありません");
-            System.exit(1);
-        }
-    }//}}}
-
     public void printHands(){//{{{
         for (int i = 0; i < 5; i++) {
             System.out.printf("%d:%s\n", i+1, hand.get(i));
@@ -210,7 +218,8 @@ public class Poker{
         // ゲームを開始する
         Poker game = new Poker();
         game.printHands();
-        game.playGame();
+        int[] exchangeCardNums = game.askExchangeCards();
+        game.exchangeCards(exchangeCardNums);
         game.printHands();
         game.printResult();
     }

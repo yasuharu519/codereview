@@ -26,11 +26,13 @@ public class PokerTest {
     }//}}}
 
     @Test
-    public void 0を入力すると手札を交換しない() {//{{{
+    public void ゼロを入力すると手札を交換しない() {//{{{
         Poker poker = new Poker();
         
         List<Card> hand = poker.getHand();
-        poker.exchangeCard("0");
+        int[] exchangeNums = {0};
+
+        poker.exchangeCards(exchangeNums);
 
         assertThat(hand, is(poker.getHand()));
     }//}}}
@@ -40,8 +42,9 @@ public class PokerTest {
         Poker poker = new Poker();
 
         Card oldCard = poker.getHand().get(0);
+        int[] exchangeNums = {1};
 
-        poker.exchangeCard("1");
+        poker.exchangeCards(exchangeNums);
         
         assertThat(poker.getHand().get(0), is(not(oldCard)));
     }//}}}
@@ -50,11 +53,19 @@ public class PokerTest {
     public void 手札は交換できる_5枚全部() {//{{{
         Poker poker = new Poker();
 
-        Card oldCards = poker.getHand();
+        List<Card> oldCards = new ArrayList<Card>();
+        for (Card c : poker.getHand()) {
+            oldCards.add(c);
+        }
 
-        poker.exchangeCard("12345");
+        int[] exchangeNums = {1, 2, 3, 4, 5};
+
+        poker.exchangeCards(exchangeNums);
+        List<Card> newCards = poker.getHand();
         
-        assertThat(oldCards, is(not(poker.getHand())));
+        for (int i = 0; i < oldCards.size(); i++) {
+            assertThat(oldCards.get(i), is(not(newCards.get(i))));
+        }
     }//}}}
 }
 
