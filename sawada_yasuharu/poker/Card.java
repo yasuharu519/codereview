@@ -5,13 +5,21 @@ package poker;
 * @author a13499
 */
 enum Suit {
-   Club,
-   Diamond,
-   Heart,
-   Spade,
-   Joker;
-
+   Club("♣"),
+   Diamond("◆"),
+   Heart("♥"),
+   Spade("♠"),
+   Joker("🃏");
    
+   private String mark;
+   private Suit(String _mark){
+    this.mark = _mark;
+   }
+
+   @Override
+   public String toString(){
+       return this.mark;
+   }
 }
 
 public class Card extends Object implements Comparable{
@@ -47,5 +55,10 @@ public class Card extends Object implements Comparable{
        }else{
            return this.number - comparedCard.number;
        }
+   }
+
+   @Override
+   public String toString(){
+       return String.format("%s:%d", this.suit, this.number);
    }
 }
