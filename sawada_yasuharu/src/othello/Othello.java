@@ -4,19 +4,33 @@ import java.util.Arrays;
 
 public class Othello{
     private Table table = new Table();
-    private Player playerA = new Player("A");
-    private Player playerB = new Player("B");
+    private Player playerA;
+    private Player playerB;
+    private Player currentPlayer;
 
-    public Othello{
-        // 初期石の配置
-        playerA.put(table, new Place('4', 'd'));
-        playerA.put(table, new Place('5', 'e'));
-        playerB.put(table, new Place('4', 'e'));
-        playerB.put(table, new Place('5', 'd'));
-    }
+    // Public
+    public Othello(){//{{{
+        playerA = new Player("A", '●');
+        playerB = new Player("B", '○');
+        currentPlayer = playerA;
+    }//}}}
+
+    public Table getTable(){//{{{
+        return table;
+    }//}}}
+
+    // Private
+    private switchPlayer(){//{{{
+        if(currentPlayer == playerA){
+            currentPlayer = playerB;
+        }else{
+            currentPlayer = playerA;
+        }
+    }//}}}
 
     public static void main(String[] args) {
-        table.printCurrentState();
+        Othello othello = new Othello();
+        othello.getTable().printCurrentState();
     }
 }
 
