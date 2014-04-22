@@ -6,12 +6,20 @@ import java.util.ArrayList;
 
 public class ParseTree {
     private String inputStr;
+    private ExpressionNode root;
 
     public ParseTree(String inputStr){
         this.inputStr = inputStr;
+        // トークン化
+        List<Token> tokens = tokenize(inputStr);
+        // ツリーの作成
+//         makeTree(tokens);
     }
 
-    public String[] tokenize(String str){//{{{
+    private ExpressionNode makeTree(String[] tokens){
+    }
+
+    public List<Token> tokenize(String str){//{{{
         try{
             StreamTokenizer st = new StreamTokenizer(new StringReader(str));
             st.resetSyntax();
@@ -24,19 +32,47 @@ public class ParseTree {
             st.wordChars('/', '/');
             st.wordChars('(', '(');
             st.wordChars(')', ')');
-            ArrayList<String> list = new ArrayList();
+            List<Token> list = new ArrayList<Token>();
             LOOP: for(;;){
                 int tt = st.nextToken();
                 switch(tt){
                     case '-':
-                        list.add(String.format("%c", '-'));
+                        list.add(new Token(TokenType.MINUS));
                         break;
                     case StreamTokenizer.TT_NUMBER:{
-                        list.add(String.format("%f", st.nval));
+                        list.add(new Token(TokenType.NUMBER, nval));
                         break;
                     }
                     case StreamTokenizer.TT_WORD:{
-                        list.add(st.sval);
+                        switch(st.val){
+                            case "+":{
+                                list.add(new Token(TokenType.PLUS));
+                                break;
+                            }
+                            case "-":{
+                                list.add(new Token(TokenType.MINUS));
+                                break;
+                            }
+                            case "*":{
+                                list.add(new Token(TokenType.MULTIPLY));
+                                break;
+                            }
+                            case "/":{
+                                list.add(new Token(TokenType.DIVIDE));
+                                break;
+                            }
+                            case "(":{
+                                list.add(new Token(TokenType.L_PAREN));
+                                break;
+                            }
+                            case ")":{
+                                list.add(new Token(TokenType.R_PAREN));
+                                break;
+                            }
+                            default:{
+                                break;
+                            }
+                        }
                         break;
                     }
                     case StreamTokenizer.TT_EOF:{
