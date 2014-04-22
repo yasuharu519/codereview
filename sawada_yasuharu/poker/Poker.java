@@ -5,9 +5,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Arrays;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.IllegalFormatException;
 
+/**
+ * 役一覧を表す列挙型
+ */
 enum HandType {
     NO_PAIR("ノーペア"),
     ONE_PAIR("ワンペア"),
@@ -35,9 +38,13 @@ public class Poker{
     private Deck deck;
     private List<Card> hand;
 
+    /**
+     * コンストラクタ.
+     * デッキと手札を表す変数を作成
+     */
     public Poker(){
         this.deck = new Deck();
-        this.hand = new ArrayList<Card>(5);
+        this.hand = new LinkedList<Card>(5);
 
         dealCards();
     }
@@ -45,7 +52,12 @@ public class Poker{
 ////////////////////////////////////////////////////////////////////////////////
 // Public
 ////////////////////////////////////////////////////////////////////////////////
-    public int[] askExchangeCards(){//{{{
+
+    /**
+     * ユーザに交換するカードの番号を尋ねる.
+     * 0が入力された場合は{0}が返される
+     */
+    public int[] askExchangeCards(){
         boolean isValidInput = false;
         String inputStr;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -90,19 +102,23 @@ public class Poker{
             }
         }
         return inputNums;
-    }//}}}
+    }
 
-    public HandType checkHand(){//{{{
+    /**
+     * 手札の役を確かめる.
+     * 手札の役を判断し、役を表す列挙型を返す
+     */
+    public HandType checkHand(){
         int[] cardNumbers = getCardNumbers();
             
         if ( isStraight() && isFlush()) {
             // ストレート・フラッシュ
             return HandType.STRAIGHT_FLUSH;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 4) {
+        } else if ( cardNumbers[0] == 4) {
             // フォーカード
             return HandType.FOUR_OF_A_KIND;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 3 &&
-                cardNumbers[cardNumbers.length - 2] == 2) {
+        } else if ( cardNumbers[0] == 3 &&
+                cardNumbers[1] == 2) {
             // フルハウス
             return HandType.FULL_HOUSE;
         } else if (isFlush()) {
@@ -111,27 +127,33 @@ public class Poker{
         } else if ( isStraight()) {
             // ストレート
             return HandType.STRAIGHT;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 3) {
+        } else if ( cardNumbers[0] == 3) {
             // スリーカード
             return HandType.THREE_OF_A_KIND;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 2 &&
-                cardNumbers[cardNumbers.length - 2] == 2) {
+        } else if ( cardNumbers[0] == 2 &&
+                cardNumbers[1] == 2) {
             // ツーペア
             return HandType.TWO_PAIR;
-        } else if ( cardNumbers[cardNumbers.length - 1] == 2) {
+        } else if ( cardNumbers[0] == 2) {
             // ワンペア
             return HandType.ONE_PAIR;
         } else{
             // ノーペア
             return HandType.NO_PAIR;
         }
-    }//}}}
+    }
 
-    public List<Card> getHand(){//{{{
+    /**
+     * hand変数のgetter.
+     */
+    public List<Card> getHand(){
         return this.hand;
-    }//}}}
+    }
 
-    public void exchangeCards(int[] nums){//{{{
+    /**
+     * 交換する手札の番号を表す配列を受け取り、手札を交換する.
+     */
+    public void exchangeCards(int[] nums){
         try{
             if (nums.length == 1 && nums[0] == 0) {
                 return;
@@ -147,21 +169,27 @@ public class Poker{
             System.out.println("1人ポーカーなのでこんなことは起きないはずなので、終了させてください(๑╹ڡ╹๑)");
             System.exit(1);
         }
-    }//}}}
+    }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Private
 ////////////////////////////////////////////////////////////////////////////////
-    private void dealCards(){//{{{
+    /**
+     * デッキから手札を配る.
+     */
+    private void dealCards(){
         try{
             hand = this.deck.drawCards(5);
         }catch(NumberExceedException e){
             System.out.println("デッキにカードがありません");
             System.exit(1);
         }
-    }//}}}
+    }
 
-    private boolean isStraight(){//{{{
+    /**
+     * ストレートが成立しているかどうか確かめる.
+     */
+    private boolean isStraight(){
         int[] numbers = new int[this.hand.size()];
         for (int i = 0; i < this.hand.size(); i++) {
             numbers[i] = this.hand.get(i).number;
@@ -176,9 +204,12 @@ public class Poker{
             lastNum = numbers[i];
         }
         return true;
-    }//}}}
+    }
 
-    private boolean isFlush(){//{{{
+    /**
+     * フラッシュが成立しているかどうか確かめる.
+     */
+    private boolean isFlush(){
         Suit suit = this.hand.get(0).suit;
         for (int i = 1; i < this.hand.size(); i++) {
             if (this.hand.get(i).suit != suit) {
@@ -186,9 +217,13 @@ public class Poker{
             }
         }
         return true;
-    }//}}}
+    }
 
-    private int[] getCardNumbers(){//{{{
+    /**
+     * 1~13の数がいくつずつあるか調べる.
+     * 同じ数のものがいつくずつあるか、降順で並べられた配列が返される.
+     */
+    private int[] getCardNumbers(){
         int[] numbersList = new int[13];
         Arrays.fill(numbersList, 0);
 
@@ -196,21 +231,34 @@ public class Poker{
             numbersList[c.number - 1] += 1;
         }
 
-        Arrays.sort(numbersList);
+        // 降順にソート
+        Arrays.sort(numbersList, Collections.reverseOrder());
         return numbersList;
-    }//}}}
+    }
 
-    public void printHands(){//{{{
+    /**
+     * 手札を標準出力に出力する.
+     */
+    public void printHands(){
         for (int i = 0; i < 5; i++) {
             System.out.printf("%d:%s\n", i+1, hand.get(i));
         }
-    }//}}}
+    }
 
+    /**
+     * 役を標準出力に出力する.
+     */
     public void printResult(){
         HandType result = checkHand();
         System.out.println("役は" + result + "でした。");
     }
 
+    /**
+     * main関数.
+     * 手札を配った後に一度手札を出力する
+     * 一度だけ交換するかユーザに聞き、
+     * 交換する場合はカードを交換して役を出力する.
+     */
     public static void main(String[] args) {
         System.out.println("交換するカードの番号を入力してください(例：135)。");
         System.out.println("0を入力するとカードを交換しません。");
