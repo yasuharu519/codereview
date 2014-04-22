@@ -22,7 +22,7 @@ enum Suit {
     }
 }
 
-public class Card extends Object implements Comparable{
+public class Card implements Comparable{
     public Suit suit;
     public int number;
 
