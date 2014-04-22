@@ -12,8 +12,8 @@ enum Suit {
    Joker("🃏");
    
    private String mark;
-   private Suit(String _mark){
-    this.mark = _mark;
+   private Suit(String mark){
+    this.mark = mark;
    }
 
    @Override
@@ -26,14 +26,14 @@ public class Card extends Object implements Comparable{
    public Suit suit;
    public int number;
 
-   public Card(Suit _suit){
-       suit = _suit;
-       number = 0;
+   public Card(Suit suit){
+       this.suit = suit;
+       this.number = 0;
    }
 
-   public Card(Suit _suit, int _number){
-       suit = _suit;
-       number = _number;
+   public Card(Suit suit, int number){
+       this.suit = suit;
+       this.number = number;
    }
 
    /**
