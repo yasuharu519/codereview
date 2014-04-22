@@ -19,14 +19,14 @@ import java.util.*;
 public class PokerTest {
 
     @Test
-    public void 最初手札が5枚配られる() {//{{{
+    public void 最初手札が5枚配られる() {
         Poker poker = new Poker();
 
         assertThat(poker.getHand().size(), is(5));
-    }//}}}
+    }
 
     @Test
-    public void ゼロを入力すると手札を交換しない() {//{{{
+    public void ゼロを入力すると手札を交換しない() {
         Poker poker = new Poker();
         
         List<Card> hand = poker.getHand();
@@ -35,10 +35,10 @@ public class PokerTest {
         poker.exchangeCards(exchangeNums);
 
         assertThat(hand, is(poker.getHand()));
-    }//}}}
+    }
 
     @Test
-    public void 手札は交換できる_1枚() {//{{{
+    public void 手札は交換できる_1枚() {
         Poker poker = new Poker();
 
         Card oldCard = poker.getHand().get(0);
@@ -47,10 +47,10 @@ public class PokerTest {
         poker.exchangeCards(exchangeNums);
         
         assertThat(poker.getHand().get(0), is(not(oldCard)));
-    }//}}}
+    }
 
     @Test
-    public void 手札は交換できる_5枚全部() {//{{{
+    public void 手札は交換できる_5枚全部() {
         Poker poker = new Poker();
 
         List<Card> oldCards = new ArrayList<Card>();
@@ -66,7 +66,7 @@ public class PokerTest {
         for (int i = 0; i < oldCards.size(); i++) {
             assertThat(oldCards.get(i), is(not(newCards.get(i))));
         }
-    }//}}}
+    }
 }
 
 
