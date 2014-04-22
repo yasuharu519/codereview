@@ -17,18 +17,22 @@ import java.util.*;
  * @author a13499
  */
 public class PokerTest {
+    private Poker poker;
+    private List<Card> cards;
+
+    @Before
+    public void initialize(){
+        this.poker = new Poker();
+        this.cards = new ArrayList<Card>();
+    }
 
     @Test
     public void 最初手札が5枚配られる() {
-        Poker poker = new Poker();
-
         assertThat(poker.getHand().size(), is(5));
     }
 
     @Test
     public void ゼロを入力すると手札を交換しない() {
-        Poker poker = new Poker();
-        
         List<Card> hand = poker.getHand();
         int[] exchangeNums = {0};
 
@@ -39,8 +43,6 @@ public class PokerTest {
 
     @Test
     public void 手札は交換できる_1枚() {
-        Poker poker = new Poker();
-
         Card oldCard = poker.getHand().get(0);
         int[] exchangeNums = {1};
 
@@ -51,8 +53,6 @@ public class PokerTest {
 
     @Test
     public void 手札は交換できる_5枚全部() {
-        Poker poker = new Poker();
-
         List<Card> oldCards = new ArrayList<Card>();
         for (Card c : poker.getHand()) {
             oldCards.add(c);
@@ -67,6 +67,187 @@ public class PokerTest {
             assertThat(oldCards.get(i), is(not(newCards.get(i))));
         }
     }
+
+    @Test
+    public void ストレートフラッシュの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Club, 2);
+        Card card3 = new Card(Suit.Club, 3);
+        Card card4 = new Card(Suit.Club, 4);
+        Card card5 = new Card(Suit.Club, 5);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.STRAIGHT_FLUSH));
+    }
+
+    @Test
+    public void フォー・オブ・ア・カインドの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Heart, 1);
+        Card card3 = new Card(Suit.Diamond, 1);
+        Card card4 = new Card(Suit.Spade, 1);
+        Card card5 = new Card(Suit.Club, 5);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.FOUR_OF_A_KIND));
+    }
+
+    @Test
+    public void フルハウスの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Spade, 1);
+        Card card3 = new Card(Suit.Club, 2);
+        Card card4 = new Card(Suit.Heart, 2);
+        Card card5 = new Card(Suit.Spade, 2);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.FULL_HOUSE));
+    }
+
+    @Test
+    public void フラッシュの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Club, 10);
+        Card card3 = new Card(Suit.Club, 3);
+        Card card4 = new Card(Suit.Club, 4);
+        Card card5 = new Card(Suit.Club, 5);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.FLUSH));
+    }
+
+    @Test
+    public void ストレートの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Heart, 2);
+        Card card3 = new Card(Suit.Club, 3);
+        Card card4 = new Card(Suit.Club, 4);
+        Card card5 = new Card(Suit.Club, 5);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.STRAIGHT));
+    }
+
+    @Test
+    public void スリー・オブ・ア・カインドの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Club, 2);
+        Card card3 = new Card(Suit.Club, 3);
+        Card card4 = new Card(Suit.Heart, 3);
+        Card card5 = new Card(Suit.Spade, 3);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.THREE_OF_A_KIND));
+    }
+
+    @Test
+    public void ツーペアの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Club, 2);
+        Card card3 = new Card(Suit.Spade, 2);
+        Card card4 = new Card(Suit.Heart, 3);
+        Card card5 = new Card(Suit.Spade, 3);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.TWO_PAIR));
+    }
+
+    @Test
+    public void ワンペアの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Club, 2);
+        Card card3 = new Card(Suit.Club, 3);
+        Card card4 = new Card(Suit.Heart, 4);
+        Card card5 = new Card(Suit.Spade, 4);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.ONE_PAIR));
+    }
+
+    @Test
+    public void ノーペアの役のテスト() {
+        Card card1 = new Card(Suit.Club, 1);
+        Card card2 = new Card(Suit.Club, 2);
+        Card card3 = new Card(Suit.Club, 3);
+        Card card4 = new Card(Suit.Heart, 6);
+        Card card5 = new Card(Suit.Spade, 7);
+        
+        List<Card> cards = new ArrayList<Card>(){{
+            add(card1);
+            add(card2);
+            add(card3);
+            add(card4);
+            add(card5);
+        }};
+        poker.setHand(cards);
+
+        assertThat(poker.checkHand(), is(HandType.NO_PAIR));
+    }
+ 
 }
 
 

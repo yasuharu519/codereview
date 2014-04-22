@@ -151,6 +151,13 @@ public class Poker{
     }
 
     /**
+     * テスト用のhand変数のsetter.
+     */
+    public void setHand(List<Card> cards){
+        this.hand = cards;
+    }
+
+    /**
      * 交換する手札の番号を表す配列を受け取り、手札を交換する.
      */
     public void exchangeCards(int[] nums){
