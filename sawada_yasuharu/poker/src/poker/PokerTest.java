@@ -9,7 +9,9 @@ package poker;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
+
 import java.util.*;
 
 /**
@@ -76,33 +78,29 @@ public class PokerTest {
         Card card4 = new Card(Suit.Club, 4);
         Card card5 = new Card(Suit.Club, 5);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.STRAIGHT_FLUSH));
     }
 
     @Test
-    public void フォー・オブ・ア・カインドの役のテスト() {
+    public void フォーオブアカインドの役のテスト() {
         Card card1 = new Card(Suit.Club, 1);
         Card card2 = new Card(Suit.Heart, 1);
         Card card3 = new Card(Suit.Diamond, 1);
         Card card4 = new Card(Suit.Spade, 1);
         Card card5 = new Card(Suit.Club, 5);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.FOUR_OF_A_KIND));
@@ -116,13 +114,11 @@ public class PokerTest {
         Card card4 = new Card(Suit.Heart, 2);
         Card card5 = new Card(Suit.Spade, 2);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.FULL_HOUSE));
@@ -136,13 +132,11 @@ public class PokerTest {
         Card card4 = new Card(Suit.Club, 4);
         Card card5 = new Card(Suit.Club, 5);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.FLUSH));
@@ -156,33 +150,29 @@ public class PokerTest {
         Card card4 = new Card(Suit.Club, 4);
         Card card5 = new Card(Suit.Club, 5);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.STRAIGHT));
     }
 
     @Test
-    public void スリー・オブ・ア・カインドの役のテスト() {
+    public void スリーオブアカインドの役のテスト() {
         Card card1 = new Card(Suit.Club, 1);
         Card card2 = new Card(Suit.Club, 2);
         Card card3 = new Card(Suit.Club, 3);
         Card card4 = new Card(Suit.Heart, 3);
         Card card5 = new Card(Suit.Spade, 3);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.THREE_OF_A_KIND));
@@ -196,13 +186,11 @@ public class PokerTest {
         Card card4 = new Card(Suit.Heart, 3);
         Card card5 = new Card(Suit.Spade, 3);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.TWO_PAIR));
@@ -216,13 +204,11 @@ public class PokerTest {
         Card card4 = new Card(Suit.Heart, 4);
         Card card5 = new Card(Suit.Spade, 4);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.ONE_PAIR));
@@ -236,18 +222,15 @@ public class PokerTest {
         Card card4 = new Card(Suit.Heart, 6);
         Card card5 = new Card(Suit.Spade, 7);
         
-        List<Card> cards = new ArrayList<Card>(){{
-            add(card1);
-            add(card2);
-            add(card3);
-            add(card4);
-            add(card5);
-        }};
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+        cards.add(card5);
         poker.setHand(cards);
 
         assertThat(poker.checkHand(), is(HandType.NO_PAIR));
     }
- 
 }
 
 
