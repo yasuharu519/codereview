@@ -16,8 +16,8 @@ public class Deck{
 	private ArrayList<Card> cardList = new ArrayList<Card>();
     private int jokerNum;
 
-    public Deck(int _jokerNum){
-        jokerNum = _jokerNum;
+    public Deck(int jokerNum){
+        this.jokerNum = jokerNum;
         initialize(jokerNum);
     }
 
@@ -27,12 +27,12 @@ public class Deck{
 
     /**
      * カードを追加し、シャッフルを行う関数
-     * @param _jokerNum 追加するジョーカーの数
+     * @param jokerNum 追加するジョーカーの数
      */
-    private void initialize(int _jokerNum){
+    private void initialize(int jokerNum){
         for (Suit suit : Suit.values()) {
             if(suit == Suit.Joker){
-                for (int i = 0; i < _jokerNum; i++) {
+                for (int i = 0; i < jokerNum; i++) {
                     cardList.add(new Card(suit));
                 }
             }
