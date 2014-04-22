@@ -10,7 +10,7 @@ enum TokenType {
     L_PAREN;
 }
 
-public Token{
+public class Token{
     public double nval;
     public TokenType type;
 

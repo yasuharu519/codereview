@@ -1,4 +1,8 @@
 package calculator;
 
-public abstract class Node{}
+public class Node{
+    public Node(){
+    }
+}
+
 

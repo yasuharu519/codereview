@@ -2,24 +2,67 @@ package calculator;
 
 import java.io.StreamTokenizer;
 import java.io.StringReader;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ParseTree {
     private String inputStr;
-    private ExpressionNode root;
+    private Node root;
+    private Queue<Token> tokens;
 
     public ParseTree(String inputStr){
         this.inputStr = inputStr;
         // トークン化
-        List<Token> tokens = tokenize(inputStr);
+        tokens = tokenize(inputStr);
         // ツリーの作成
-//         makeTree(tokens);
+        root = getExpression();
     }
 
-    private ExpressionNode makeTree(String[] tokens){
-    }
+    private Node getExpression(){//{{{
+        Node lhs, rhs;
+        lhs = getTerm();
 
-    public List<Token> tokenize(String str){//{{{
+        Token token = tokens.poll();
+        if(token == null){
+            throw new Exception() // TODO: エラー！
+        }
+
+    }//}}}
+
+    private Node getTerm(){//{{{
+        Node lhs, rhs;
+
+        lhs = getFactor();
+    }//}}}
+
+    private Node getFactor(){//{{{
+        Node node;
+        
+        if(!tokens.isEmpty()){
+            Token token = tokens.poll();
+            switch (token.type) {
+                TokenType.L_PAREN://{{{
+                    node = getExpression();
+                    Token token2 = tokens.poll();
+                    if(token2 == null){
+                        throw new Exception(); // TODO: 新しいExceptionを作成
+                    }else if(token2.type == TokenType.R_PAREN){
+                        return node;
+                    }else{
+                        throw new Exception(); // TODO: 新しいExceptionを作成
+                    }
+                    break;//}}}
+                TokenType.NUMBER:
+                    return new FactorNode(token.nval);
+                default:
+                    throw new Exception(); // TODO: 新しいExceptionを作成
+            }
+        }
+    }//}}}
+
+    public Queue<Token> tokenize(String str){//{{{
         try{
             StreamTokenizer st = new StreamTokenizer(new StringReader(str));
             st.resetSyntax();
@@ -32,7 +75,7 @@ public class ParseTree {
             st.wordChars('/', '/');
             st.wordChars('(', '(');
             st.wordChars(')', ')');
-            List<Token> list = new ArrayList<Token>();
+            Queue<Token> list = new LinkedList<Token>();
             LOOP: for(;;){
                 int tt = st.nextToken();
                 switch(tt){
@@ -40,11 +83,11 @@ public class ParseTree {
                         list.add(new Token(TokenType.MINUS));
                         break;
                     case StreamTokenizer.TT_NUMBER:{
-                        list.add(new Token(TokenType.NUMBER, nval));
+                        list.add(new Token(TokenType.NUMBER, st.nval));
                         break;
                     }
                     case StreamTokenizer.TT_WORD:{
-                        switch(st.val){
+                        switch(st.sval){
                             case "+":{
                                 list.add(new Token(TokenType.PLUS));
                                 break;
@@ -83,7 +126,7 @@ public class ParseTree {
                     }
                 }
             }
-            return list.toArray(new String[list.size()]);
+            return list;
         } catch (Exception e) {
             return null;
         }
@@ -94,9 +137,9 @@ public class ParseTree {
         System.out.println("testStr = " + testStr);
         ParseTree ptree = new ParseTree(testStr);
 
-        String[] args2 = ptree.tokenize(testStr);
-        for (String s : args2) {
-            System.out.println(s);
+        Queue<Token> tokens = ptree.tokenize(testStr);
+        for (Token token : tokens) {
+            System.out.println(token.type);
         }
     }
 
