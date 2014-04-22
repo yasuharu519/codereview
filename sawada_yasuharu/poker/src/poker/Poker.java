@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.IllegalFormatException;
+import java.util.Collections;
 
 /**
  * 役一覧を表す列挙型
@@ -44,7 +45,7 @@ public class Poker{
      */
     public Poker(){
         this.deck = new Deck();
-        this.hand = new LinkedList<Card>(5);
+        this.hand = new LinkedList<Card>();
 
         dealCards();
     }
@@ -205,7 +206,7 @@ public class Poker{
 
         int lastNum = numbers[0];
         for (int i = 1; i < this.hand.size(); i++) {
-            if (numbers[i] + 1 != lastNum) {
+            if (lastNum + 1 != numbers[i]) {
                 return false;
             }
             lastNum = numbers[i];
@@ -238,8 +239,16 @@ public class Poker{
             numbersList[c.number - 1] += 1;
         }
 
-        // 降順にソート
-        Arrays.sort(numbersList, Collections.reverseOrder());
+        // 昇順にソート
+        Arrays.sort(numbersList);
+        // 降順にするためにswap
+        for (int i = 0; i < numbersList.length / 2; i++) {
+        	int rhs = numbersList.length - 1 - i;
+            numbersList[i] ^= numbersList[rhs];
+            numbersList[rhs] ^= numbersList[i];
+            numbersList[i] ^= numbersList[rhs];
+        }
+
         return numbersList;
     }
 
