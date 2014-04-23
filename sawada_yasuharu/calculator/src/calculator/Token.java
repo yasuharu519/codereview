@@ -10,44 +10,81 @@ enum TokenType {
     L_PAREN(0);
 
     private int priority;
+
     private TokenType(int p){
         this.priority = p;
     }
+
     public int getPriority(){
         return this.priority;
     }
 }
 
-public class Token{
+public class Token implements Comparable{
     private int parenNum;
     private double nval;
     private TokenType type;
 
+    // Constructor
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * TokenTypeのみのコンストラクタ.
+     */
     public Token(TokenType type){
         this.type = type;
     }
 
-    // 記号と計算の優先度を作成するコンストラクタ
+    /**
+     * TokenTypeとカッコの数を設定するコンストラクタ.
+     */
     public Token(TokenType type, int parenNum){
         this(type);
         this.parenNum = parenNum;
     }
 
-    // 数字とその値を作成するコンストラクタ
+    /**
+     * TokenTypeとTokenTypeがNumberの場合の数を設定するコンストラクタ.
+     */
     public Token(TokenType type, double nval){
         this(type);
         this.nval = nval;
     }
 
+    // Public methods
+    ///////////////////////////////////////////////////////////////////////////
+
+    public int compareTo(Object object){
+        Token otherToken = (Token)object;
+        if(this.parenNum == otherToken.getParenNum()){
+            return this.type.getPriority() - otherToken.getTokenType().getPriority();
+        }else{
+            return this.parenNum - otherToken.getParenNum();
+        }
+    }
+    
+    // Getter
+    ///////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * TokenTypeのGetter.
+     */
     public TokenType getTokenType(){
         return type;
     }
 
+    /**
+     * TokenTypeがNumberの場合のnvalのGetter.
+     */
     public double getValue(){
         return nval;
     }
 
-    public int getPriority(){
-        return this.type.getPriority() * (int)Math.pow(3.0, ((double)parenNum));
+    /**
+     * Tokenがある場所のカッコの数のGetter.
+     */
+    public int getParenNum(){
+        return parenNum;
     }
+
 }
