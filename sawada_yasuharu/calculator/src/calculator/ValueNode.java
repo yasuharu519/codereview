@@ -4,12 +4,12 @@ package calculator;
  * 数字を表すクラス
  */
 public class ValueNode extends Node{
-    private final double value;
+    private final RationalNumber value;
 
     // Constructor
     ///////////////////////////////////////////////////////////////////////////
 
-    public ValueNode(double value){
+    public ValueNode(RationalNumber value){
         this.value = value;
     }
 
@@ -19,7 +19,7 @@ public class ValueNode extends Node{
     /**
      * 数字自体のGetter.
      */
-    public double getValue(){
+    public RationalNumber getValue(){
         return this.value;
     }
 }

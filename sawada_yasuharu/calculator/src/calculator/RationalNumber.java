@@ -1,0 +1,76 @@
+package calculator;
+
+public class RationalNumber{
+    public int numerator;
+    public int denominator;
+
+    public RationalNumber(int number){
+        this.numerator = number;
+        this.denominator = 1;
+    }
+
+    // Public methods
+    ///////////////////////////////////////////////////////////////////////////
+
+    public RationalNumber plus(RationalNumber other){
+        // 通分
+        this.numerator *= other.denominator;
+        this.denominator *= other.denominator;
+        this.numerator += other.numerator;
+        // 約分
+        reduction();
+        return this;
+    }
+
+    public RationalNumber minus(RationalNumber other){
+        // 通分
+        this.numerator *= other.denominator;
+        this.denominator *= other.denominator;
+        this.numerator -= other.numerator;
+        // 約分
+        reduction();
+        return this;
+    }
+
+    public RationalNumber multiply(RationalNumber other){
+        this.numerator *= other.numerator;
+        this.denominator *= other.denominator;
+        // 約分
+        reduction();
+        return this;
+    }
+
+    public RationalNumber divide(RationalNumber other){
+        this.numerator *= other.denominator;
+        this.denominator *= other.numerator;
+        // 約分
+        reduction();
+        return this;
+    }
+
+    public String toString(boolean printInDouble){
+        if (printInDouble) {
+            return String.format("%f",
+                    (double)this.numerator / this.denominator);
+        } else {
+            return String.format("%d/%d",
+                    this.numerator, this.denominator);
+        }
+    }
+
+    // Private methods
+    ///////////////////////////////////////////////////////////////////////////
+    private void reduction(){
+        int gcd = gcd(numerator, denominator);
+        this.numerator /= gcd;
+        this.denominator /= gcd;
+    }
+
+    private int gcd(int m, int n){
+        if (n == 0) {
+            return m;
+        } else {
+            return gcd(n, m % n);
+        }
+    }
+}

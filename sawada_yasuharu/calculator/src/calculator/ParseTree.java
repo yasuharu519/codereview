@@ -4,6 +4,7 @@ import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.util.List;
 import java.util.LinkedList;
+import java.io.IOException;
 
 public class ParseTree {
 
@@ -13,17 +14,13 @@ public class ParseTree {
     /**
      * 入力を受け取り、解析木を作成した後に根Nodeを返す.
      */
-    public static Node buildParseTree(String inputStr){
+    public static Node buildParseTree(String inputStr) throws IllegalSyntaxException{
         // 解析してトークン化
         List<Token> tokens = tokenize(inputStr);
         // カッコを表すトークンを削除
         tokens = removeParenTokens(tokens);
         // ツリーの作成
-        try {
-            return makeParseTree(tokens);
-        } catch (IllegalSyntaxException e) {
-            System.out.println(e); // TODO: シンタックスがおかしい場合エラー
-        }
+        return makeParseTree(tokens);
     }
 
     /**
@@ -48,58 +45,63 @@ public class ParseTree {
 
         // カッコの数のカウンタ
         int parenNum = 0;
-        LOOP: for(;;){
-            int tt = st.nextToken();
-            switch(tt){
-                case '-': // マイナスだけここに作成
-                    list.add(new Token(TokenType.MINUS, parenNum));
-                    break;
-                case StreamTokenizer.TT_NUMBER:{
-                    list.add(new Token(TokenType.NUMBER, st.nval));
-                    break;
-                }
-                case StreamTokenizer.TT_WORD:{
-                    String word = st.sval;
-                    for (char c : word.toCharArray()) {
-                        switch(c){
-                            case '+':{
-                                list.add(new Token(TokenType.PLUS, parenNum));
-                                break;
-                            }
-                            case '*':{
-                                list.add(new Token(TokenType.MULTIPLY, parenNum));
-                                break;
-                            }
-                            case '/':{
-                                list.add(new Token(TokenType.DIVIDE, parenNum));
-                                break;
-                            }
-                            case '(':{
-                                parenNum++;
-                                list.add(new Token(TokenType.L_PAREN, parenNum));
-                                break;
-                            }
-                            case ')':{
-                                parenNum--;
-                                if (parenNum < 0)
-                                    throw new IllegalSyntaxException("カッコの数が一致していません");
-                                list.add(new Token(TokenType.R_PAREN, parenNum));
-                                break;
-                            }
-                            default:{
-                                break;
+        try{
+            OUTER: for(;;){
+                int tt = st.nextToken();
+                switch(tt){
+                    case '-': // マイナスだけここに作成
+                        list.add(new Token(TokenType.MINUS, parenNum));
+                        break;
+                    case StreamTokenizer.TT_NUMBER:{
+                        list.add(new Token(TokenType.NUMBER, st.nval));
+                        break;
+                    }
+                    case StreamTokenizer.TT_WORD:{
+                        String word = st.sval;
+                        for (char c : word.toCharArray()) {
+                            switch(c){
+                                case '+':{
+                                    list.add(new Token(TokenType.PLUS, parenNum));
+                                    break;
+                                }
+                                case '*':{
+                                    list.add(new Token(TokenType.MULTIPLY, parenNum));
+                                    break;
+                                }
+                                case '/':{
+                                    list.add(new Token(TokenType.DIVIDE, parenNum));
+                                    break;
+                                }
+                                case '(':{
+                                    parenNum++;
+                                    list.add(new Token(TokenType.L_PAREN, parenNum));
+                                    break;
+                                }
+                                case ')':{
+                                    parenNum--;
+                                    if (parenNum < 0)
+                                        throw new IllegalSyntaxException("カッコの数が一致していません");
+                                    list.add(new Token(TokenType.R_PAREN, parenNum));
+                                    break;
+                                }
+                                default:{
+                                    break;
+                                }
                             }
                         }
+                        break;
                     }
-                    break;
-                }
-                case StreamTokenizer.TT_EOF:{
-                    break LOOP;
-                }
-                default:{
-                    throw new IllegalSyntaxException("不正な文字が入力されています");
+                    case StreamTokenizer.TT_EOF:{
+                        break OUTER;
+                    }
+                    default:{
+                        throw new IllegalSyntaxException("不正な文字が入力されています");
+                    }
                 }
             }
+        } catch (IOException e){
+            System.out.println("I/Oエラーが発生しました");
+            System.exit(-1);
         }
         return list;
     }
@@ -116,7 +118,13 @@ public class ParseTree {
         if (tokens.size() == 1){
             Token token = tokens.get(0);
             if (token.getTokenType() == TokenType.NUMBER){
-                return new ValueNode(token.getValue());
+                double value = token.getValue();
+                // 整数かどうかチェック(少数の場合今回はシンタックスエラーにする)
+                if((value == Math.floor(value)) && !Double.isInfinite(value)){
+                    return new ValueNode(new RationalNumber((int)value));
+                } else {
+                    throw new IllegalSyntaxException("入力は整数で入力してください"); 
+                }
             } else {
                 // 数式の最後がオペランドで終わっているような場合
                 throw new IllegalSyntaxException("数式の入力形式が不正です"); 
