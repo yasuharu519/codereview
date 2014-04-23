@@ -5,64 +5,101 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class ParseTree {
     private String inputStr;
     private Node root;
-    private Queue<Token> tokens;
 
     public ParseTree(String inputStr){
         this.inputStr = inputStr;
         // トークン化
-        tokens = tokenize(inputStr);
+        List<Token> tokens = tokenize(inputStr);
+        tokens = removeParenTokens(tokens);
         // ツリーの作成
-        root = getExpression();
+        try {
+            root = makeParseTree(tokens);
+            System.out.println(traverseTree(root));
+        } catch (Exception e) {
+            System.out.println(e); // TODO: シンタックスがおかしい場合エラー
+        }
     }
 
-    private Node getExpression(){//{{{
-        Node lhs, rhs;
-        lhs = getTerm();
-
-        Token token = tokens.poll();
-        if(token == null){
-            throw new Exception() // TODO: エラー！
-        }
-
-    }//}}}
-
-    private Node getTerm(){//{{{
-        Node lhs, rhs;
-
-        lhs = getFactor();
-    }//}}}
-
-    private Node getFactor(){//{{{
-        Node node;
-        
-        if(!tokens.isEmpty()){
-            Token token = tokens.poll();
-            switch (token.type) {
-                TokenType.L_PAREN://{{{
-                    node = getExpression();
-                    Token token2 = tokens.poll();
-                    if(token2 == null){
-                        throw new Exception(); // TODO: 新しいExceptionを作成
-                    }else if(token2.type == TokenType.R_PAREN){
-                        return node;
-                    }else{
-                        throw new Exception(); // TODO: 新しいExceptionを作成
-                    }
-                    break;//}}}
-                TokenType.NUMBER:
-                    return new FactorNode(token.nval);
+    private double traverseTree(Node root) throws Exception{
+        if (root instanceof FactorNode){
+            return ((FactorNode)root).getValue();
+        } else if (root instanceof ExpressionNode) {
+            ExpressionNode node = (ExpressionNode)root;
+            TokenType type = node.getTokenType();
+            Node lhs = node.getLeftNode();
+            Node rhs = node.getRightNode();
+            switch (type) {
+                case PLUS:
+                    return traverseTree(lhs) + traverseTree(rhs);
+                case MINUS:
+                    return traverseTree(lhs) - traverseTree(rhs);
+                case MULTIPLY:
+                    return traverseTree(lhs) * traverseTree(rhs);
+                case DIVIDE:
+                    return traverseTree(lhs) / traverseTree(rhs);
                 default:
-                    throw new Exception(); // TODO: 新しいExceptionを作成
+                    throw new Exception(); // TODO: シンタックスエラー
+            }
+        } else{
+            throw new Exception(); // TODO: Nodeクラスがセットされている場合エラー
+        }
+    }
+
+    private Node makeParseTree(List<Token> tokens) throws Exception{//{{{
+        if (tokens.size() == 1){
+            Token token = tokens.get(0);
+            if (token.getTokenType() == TokenType.NUMBER){
+                return new FactorNode(token.getValue());
+            } else {
+                throw new Exception(); //TODO: 数字じゃない場合エラー
             }
         }
+        int idx = findMinimumPriorityTokenIndex(tokens);
+        Token token = tokens.get(idx);
+        List<Token> lhsList = tokens.subList(0, idx);
+        List<Token> rhsList = tokens.subList(idx + 1, tokens.size());
+        Node lhsNode = makeParseTree(lhsList);
+        Node rhsNode = makeParseTree(rhsList);
+        ExpressionNode node = new ExpressionNode(token.getTokenType(),
+            lhsNode, rhsNode);
+        return node;
     }//}}}
 
-    public Queue<Token> tokenize(String str){//{{{
+    private int findMinimumPriorityTokenIndex(List<Token> tokens){//{{{
+        // 0以外で優先度の低いオペランドの位置を取ってくる
+        int idx = -1;
+        int priority = 0;
+        
+        for (int i = 0; i < tokens.size(); i++) {
+            Token token = tokens.get(i);
+            if (token.getPriority() == 0) {
+                continue;
+            }
+            if (priority == 0 || priority > token.getPriority()) {
+                priority = token.getPriority();
+                idx = i;
+            }
+        }
+        return idx;
+    }//}}}
+
+    private List<Token> removeParenTokens(List<Token> tokens){//{{{
+        for (int i = 0; i < tokens.size(); i++) {
+            Token token = tokens.get(i);
+            TokenType type = token.getTokenType();
+            if (type == TokenType.L_PAREN || type == TokenType.R_PAREN){
+                tokens.remove(i);
+                i--;
+            }
+        }
+        return tokens;
+    }//}}}
+
+    public List<Token> tokenize(String str){//{{{
         try{
             StreamTokenizer st = new StreamTokenizer(new StringReader(str));
             st.resetSyntax();
@@ -75,47 +112,51 @@ public class ParseTree {
             st.wordChars('/', '/');
             st.wordChars('(', '(');
             st.wordChars(')', ')');
-            Queue<Token> list = new LinkedList<Token>();
+            List<Token> list = new LinkedList<Token>();
+
+            int parenNum = 0;
             LOOP: for(;;){
                 int tt = st.nextToken();
                 switch(tt){
-                    case '-':
-                        list.add(new Token(TokenType.MINUS));
+                    case '-': // マイナスだけここに作成
+                        list.add(new Token(TokenType.MINUS, parenNum));
                         break;
                     case StreamTokenizer.TT_NUMBER:{
                         list.add(new Token(TokenType.NUMBER, st.nval));
                         break;
                     }
                     case StreamTokenizer.TT_WORD:{
-                        switch(st.sval){
-                            case "+":{
-                                list.add(new Token(TokenType.PLUS));
-                                break;
-                            }
-                            case "-":{
-                                list.add(new Token(TokenType.MINUS));
-                                break;
-                            }
-                            case "*":{
-                                list.add(new Token(TokenType.MULTIPLY));
-                                break;
-                            }
-                            case "/":{
-                                list.add(new Token(TokenType.DIVIDE));
-                                break;
-                            }
-                            case "(":{
-                                list.add(new Token(TokenType.L_PAREN));
-                                break;
-                            }
-                            case ")":{
-                                list.add(new Token(TokenType.R_PAREN));
-                                break;
-                            }
-                            default:{
-                                break;
-                            }
-                        }
+                        String word = st.sval;
+                        for (char c : word.toCharArray()) {//{{{
+                            switch(c){//{{{
+                                case '+':{
+                                    list.add(new Token(TokenType.PLUS, parenNum));
+                                    break;
+                                }
+                                case '*':{
+                                    list.add(new Token(TokenType.MULTIPLY, parenNum));
+                                    break;
+                                }
+                                case '/':{
+                                    list.add(new Token(TokenType.DIVIDE, parenNum));
+                                    break;
+                                }
+                                case '(':{
+                                    parenNum++;
+                                    list.add(new Token(TokenType.L_PAREN, parenNum));
+                                    break;
+                                }
+                                case ')':{
+                                    parenNum--;
+                                    // TODO: ミスマッチの補足
+                                    list.add(new Token(TokenType.R_PAREN, parenNum));
+                                    break;
+                                }
+                                default:{
+                                    break;
+                                }
+                            }//}}}
+                        }//}}}
                         break;
                     }
                     case StreamTokenizer.TT_EOF:{
@@ -133,14 +174,8 @@ public class ParseTree {
     }//}}}
 
     public static void main(String[] args) {
-        String testStr = "123 * ( 23 + ( 3 / 2)) - 10";
+        String testStr = "123 - ( 23 + ( 3 / 2)) - 10";
         System.out.println("testStr = " + testStr);
-        ParseTree ptree = new ParseTree(testStr);
-
-        Queue<Token> tokens = ptree.tokenize(testStr);
-        for (Token token : tokens) {
-            System.out.println(token.type);
-        }
+        ParseTree tree = new ParseTree(testStr);
     }
-
 }
