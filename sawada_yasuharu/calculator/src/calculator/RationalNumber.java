@@ -9,6 +9,21 @@ public class RationalNumber{
         this.denominator = 1;
     }
 
+    public RationalNumber(int numerator, int denominator){
+        this.numerator = numerator;
+        this.denominator = denominator;
+        reduction();
+    }
+
+    public RationalNumber(double number){
+        int count = 0;
+        while(!isInteger(number)){
+            number *= 10;
+            count++;
+        }
+        this((int)number, (int)(Math.pow(10, count)));
+    }
+
     // Public methods
     ///////////////////////////////////////////////////////////////////////////
 
@@ -75,5 +90,9 @@ public class RationalNumber{
         } else {
             return gcd(n, m % n);
         }
+    }
+
+    private boolean isInteger(double value){
+        return ((value == Math.floor(value)) && !Double.isInfinite(value))
     }
 }
