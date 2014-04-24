@@ -2,13 +2,14 @@ package calculator;
 
 public class Calculator {
 
-    public static void calculate(String fomula, boolean doubleFlag){
+    public static String calculate(String fomula, boolean doubleFlag){
         try{
             Node root = ParseTree.buildParseTree(fomula);
             RationalNumber result = traverseTree(root);
-            System.out.println(result.toString(doubleFlag));
+            return result.toString(doubleFlag);
         } catch (IllegalSyntaxException e) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
 
@@ -39,7 +40,9 @@ public class Calculator {
 
     public static void main(String[] args) {
         String str = "(1 + 2 * 3 + (4 + 3)) / 222";
-        Calculator.calculate(str, false);
+        String result = Calculator.calculate(str, false);
+
+        System.out.println(result);
 //         if (args.length > 1) {
 //             String option = args[0];
 //             if (option.equals("-d")) {
