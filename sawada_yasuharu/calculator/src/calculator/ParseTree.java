@@ -32,6 +32,10 @@ public class ParseTree {
         // 前処理
         String checkStr = str.replaceAll("\\(", " ( ");
         checkStr = checkStr.replaceAll("\\)", " ) ");
+        checkStr = checkStr.replaceAll("\\+", " + ");
+        checkStr = checkStr.replaceAll("\\-", " - ");
+        checkStr = checkStr.replaceAll("\\*", " * ");
+        checkStr = checkStr.replaceAll("\\/", " / ");
         // StreamTokenizerの設定
         StreamTokenizer st = new StreamTokenizer(new StringReader(checkStr));
         st.resetSyntax();
@@ -102,6 +106,9 @@ public class ParseTree {
                     }
                 }
             }
+            if (parenNum != 0) {
+                throw new IllegalSyntaxException("開きカッコと閉じカッコの数が一致していません");    
+            }
         } catch (IOException e){
             System.out.println("I/Oエラーが発生しました");
             System.exit(-1);
@@ -118,7 +125,10 @@ public class ParseTree {
      * @throws IllegalSyntaxException 数式のシンタックスが不正な場合
      */
     private static Node makeParseTree(List<Token> tokens) throws IllegalSyntaxException{
-        if (tokens.size() == 1){
+        if (tokens.size() == 0){
+            // カッコだけの場合などはエラー
+            throw new IllegalSyntaxException("数式の入力形式が不正です"); 
+        } else if (tokens.size() == 1){
             Token token = tokens.get(0);
             if (token.getTokenType() == TokenType.NUMBER){
                 double value = token.getValue();
