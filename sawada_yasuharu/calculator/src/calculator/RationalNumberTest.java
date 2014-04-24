@@ -1,4 +1,4 @@
-package calculator
+package calculator;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -27,7 +27,7 @@ public class RationalNumberTest {
     }
 
     @Test
-    public void 分母分子を入力とすると、約分がされること() {
+    public void 分母分子を入力とすると約分がされること() {
         RationalNumber testNum = new RationalNumber(6, 9);
 
         assertThat(testNum.numerator, is(2));
@@ -135,7 +135,7 @@ public class RationalNumberTest {
     }
 
     @Test
-    public void toStringがfalseを渡され、分母が1の場合は分母の表示を行わないこと() {
+    public void toStringがfalseを渡され分母が1の場合は分母の表示を行わないこと() {
         RationalNumber testNum = new RationalNumber(10);
 
         assertThat(testNum.toString(false), is("10"));
@@ -145,6 +145,6 @@ public class RationalNumberTest {
     public void toStringがtrueを渡された場合に正しく動作すること() {
         RationalNumber testNum = new RationalNumber(1, 2);
 
-        assertThat(testNum.toString(true), is("0.5"));
+        assertThat(testNum.toString(true), is("0.500000"));
     }
 }

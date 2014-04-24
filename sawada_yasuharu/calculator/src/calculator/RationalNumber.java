@@ -21,7 +21,9 @@ public class RationalNumber{
             number *= 10;
             count++;
         }
-        this((int)number, (int)(Math.pow(10, count)));
+        this.numerator = (int)number;
+        this.denominator = (int)(Math.pow(10, count));
+        reduction();
     }
 
     // Public methods
@@ -29,8 +31,11 @@ public class RationalNumber{
 
     public RationalNumber plus(RationalNumber other){
         // 通分
-        this.numerator *= other.denominator;
-        this.denominator *= other.denominator;
+        if(this.denominator != other.denominator){
+            this.numerator *= other.denominator;
+            other.numerator *= this.denominator;
+            this.denominator *= other.denominator;
+        }
         this.numerator += other.numerator;
         // 約分
         reduction();
@@ -39,8 +44,12 @@ public class RationalNumber{
 
     public RationalNumber minus(RationalNumber other){
         // 通分
-        this.numerator *= other.denominator;
-        this.denominator *= other.denominator;
+        if(this.denominator != other.denominator){
+            this.numerator *= other.denominator;
+            other.numerator *= this.denominator;
+            this.denominator *= other.denominator;
+        }
+        // 引き算
         this.numerator -= other.numerator;
         // 約分
         reduction();
@@ -93,6 +102,6 @@ public class RationalNumber{
     }
 
     private boolean isInteger(double value){
-        return ((value == Math.floor(value)) && !Double.isInfinite(value))
+        return ((value == Math.floor(value)) && !Double.isInfinite(value));
     }
 }
