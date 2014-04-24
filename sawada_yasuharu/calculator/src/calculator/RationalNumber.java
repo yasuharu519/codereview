@@ -102,7 +102,6 @@ public class RationalNumber{
         } else {
             return false;
         }
-        return true;
     }
 
     // Private methods

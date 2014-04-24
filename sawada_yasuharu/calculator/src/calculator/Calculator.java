@@ -13,7 +13,7 @@ public class Calculator {
         }
     }
 
-    private static RationalNumber traverseTree(Node root) {
+    public static RationalNumber traverseTree(Node root) {
         if (root instanceof ValueNode){
             return ((ValueNode)root).getValue();
         } else if (root instanceof ExpressionNode) {
