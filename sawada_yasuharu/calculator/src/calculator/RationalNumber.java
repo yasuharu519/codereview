@@ -85,6 +85,26 @@ public class RationalNumber{
         }
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        RationalNumber otherNum = (RationalNumber)obj;
+        if (numerator == otherNum.numerator && denominator == otherNum.denominator) {
+            return true;
+        } else {
+            return false;
+        }
+        return true;
+    }
+
     // Private methods
     ///////////////////////////////////////////////////////////////////////////
     private void reduction(){
