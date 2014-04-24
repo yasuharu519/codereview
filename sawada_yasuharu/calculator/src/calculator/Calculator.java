@@ -39,16 +39,20 @@ public class Calculator {
     }
 
     public static void main(String[] args) {
+        String result;
         if (args.length > 1) {
             String option = args[0];
             if (option.equals("-d")) {
-                Calculator.calculate(args[1], true);
+                result = Calculator.calculate(args[1], true);
             }else{
                 System.out.println("オプションが無効です");
                 return;
             }
         }else{
-            Calculator.calculate(args[0], false);
+            result = Calculator.calculate(args[0], false);
+        }
+        if (result != null) {
+            System.out.println(result);
         }
     }
 }
