@@ -53,8 +53,11 @@ public class RationalNumber{
             return String.format("%f",
                     (double)this.numerator / this.denominator);
         } else {
-            return String.format("%d/%d",
-                    this.numerator, this.denominator);
+            if (this.denominator == 1) {
+                return String.format("%d", this.numerator);
+            } else {
+                return String.format("%d/%d", this.numerator, this.denominator);    
+            }
         }
     }
 

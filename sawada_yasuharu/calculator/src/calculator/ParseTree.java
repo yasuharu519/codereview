@@ -29,8 +29,11 @@ public class ParseTree {
      * @throws IllegalSyntaxException 数式のシンタックスにエラーがある場合
      */
     public static List<Token> tokenize(String str) throws IllegalSyntaxException{
+        // 前処理
+        String checkStr = str.replaceAll("\\(", " ( ");
+        checkStr = checkStr.replaceAll("\\)", " ) ");
         // StreamTokenizerの設定
-        StreamTokenizer st = new StreamTokenizer(new StringReader(str));
+        StreamTokenizer st = new StreamTokenizer(new StringReader(checkStr));
         st.resetSyntax();
         st.parseNumbers();
         st.whitespaceChars('\t', '\t');
@@ -85,7 +88,7 @@ public class ParseTree {
                                     break;
                                 }
                                 default:{
-                                    break;
+                                    throw new IllegalSyntaxException("不正な文字が入力されています");
                                 }
                             }
                         }
