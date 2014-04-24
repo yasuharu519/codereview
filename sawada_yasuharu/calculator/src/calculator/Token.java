@@ -20,7 +20,7 @@ enum TokenType {
     }
 }
 
-public class Token implements Comparable{
+public class Token implements Comparable<Object>{
     private int parenNum;
     private double nval;
     private TokenType type;

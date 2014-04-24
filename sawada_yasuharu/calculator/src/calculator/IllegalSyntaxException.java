@@ -7,7 +7,9 @@ package calculator;
  * など
  */
 public class IllegalSyntaxException extends Exception{
-    public IllegalSyntaxException(String str){
+	private static final long serialVersionUID = 2712179481911159039L;
+
+	public IllegalSyntaxException(String str){
         super(str);
     }
 }

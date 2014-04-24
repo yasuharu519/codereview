@@ -27,17 +27,17 @@ public class ParseTreeTest {
 
     @Test(expected=IllegalSyntaxException.class)
     public void 記号が一つだけ入力された場合エラーが投げられる() throws IllegalSyntaxException {
-        Node root = ParseTree.buildParseTree("(");
+        ParseTree.buildParseTree("(");
     }
 
     @Test(expected=IllegalSyntaxException.class)
     public void カッコの数にミスマッチがあった場合エラーが投げられる() throws IllegalSyntaxException {
-        Node root = ParseTree.buildParseTree("(1");
+        ParseTree.buildParseTree("(1");
     }
 
     @Test(expected=IllegalSyntaxException.class)
     public void カッコの数にミスマッチがあった場合エラーが投げられる2() throws IllegalSyntaxException {
-        Node root = ParseTree.buildParseTree("1+(1");
+        ParseTree.buildParseTree("1+(1");
     }
 
     @Test

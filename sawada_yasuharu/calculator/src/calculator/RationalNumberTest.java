@@ -5,10 +5,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.Before;
 
 public class RationalNumberTest {
-    private RationalNumber testNum;
 
     @Test
     public void intを入力としてとるコンストラクタが正しく動くこと() {
