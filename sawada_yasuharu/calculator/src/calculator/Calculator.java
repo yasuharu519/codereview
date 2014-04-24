@@ -39,20 +39,16 @@ public class Calculator {
     }
 
     public static void main(String[] args) {
-        String str = "(1.0 + 2 * 3 + (4 + 3)) / 222";
-        String result = Calculator.calculate(str, false);
-
-        System.out.println(result);
-//         if (args.length > 1) {
-//             String option = args[0];
-//             if (option.equals("-d")) {
-//                 Calculator.calculate(args[1], true);
-//             }else{
-//                 System.out.println("オプションが無効です");
-//                 return;
-//             }
-//         }else{
-//             Calculator.calculate(args[0], false);
-//         }
+        if (args.length > 1) {
+            String option = args[0];
+            if (option.equals("-d")) {
+                Calculator.calculate(args[1], true);
+            }else{
+                System.out.println("オプションが無効です");
+                return;
+            }
+        }else{
+            Calculator.calculate(args[0], false);
+        }
     }
 }
