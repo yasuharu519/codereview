@@ -147,4 +147,16 @@ public class RationalNumberTest {
 
         assertThat(testNum.toString(true), is("0.500000"));
     }
+
+    @Test
+    public void equalsメソッドが正しく動作すること() {
+        RationalNumber testNum, matcher;
+        testNum = new RationalNumber(10);
+        matcher = new RationalNumber(20, 2);
+        assertTrue(testNum.equals(matcher));
+
+        testNum = new RationalNumber(6, 4);
+        matcher = new RationalNumber(3, 2);
+        assertTrue(testNum.equals(matcher));
+    }
 }
