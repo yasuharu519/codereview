@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package cards;
+package poker;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
